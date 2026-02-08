@@ -1,0 +1,50 @@
+{
+  "Strategy": {
+    "count": 1,
+    "percentage": 33.3,
+    "common_titles": {
+      "Strategy Associate": 1
+    },
+    "typical_teams": {
+      "Corporate Strategy": 1
+    },
+    "employment_types": {
+      "Full-time": 1
+    },
+    "work_modes": {
+      "Hybrid": 1
+    }
+  },
+  "Operations": {
+    "count": 1,
+    "percentage": 33.3,
+    "common_titles": {
+      "Operations Manager": 1
+    },
+    "typical_teams": {
+      "Supply Chain Operations": 1
+    },
+    "employment_types": {
+      "Full-time": 1
+    },
+    "work_modes": {
+      "Onsite": 1
+    }
+  },
+  "Marketing": {
+    "count": 1,
+    "percentage": 33.3,
+    "common_titles": {
+      "Marketing Manager - Growth": 1
+    },
+    "typical_teams": {
+      "Digital Marketing": 1
+    },
+    "employment_types": {
+      "Full-time": 1
+    },
+    "work_modes": {
+      "Hybrid": 1
+    }
+  }
+}

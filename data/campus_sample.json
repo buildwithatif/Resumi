@@ -1,0 +1,155 @@
+[
+    {
+        "_id": "sample_job_001",
+        "title": "Strategy Associate",
+        "status": "ACTIVE",
+        "recruitingCompanyId": {
+            "companyName": "McKinsey & Company",
+            "sectors": [
+                {
+                    "name": "Consulting"
+                }
+            ],
+            "companySize": "Large",
+            "location": [
+                {
+                    "name": "Mumbai"
+                }
+            ]
+        },
+        "roles": [
+            {
+                "name": "Strategy Consultant"
+            },
+            {
+                "name": "Business Analyst"
+            }
+        ],
+        "team": [
+            {
+                "name": "Corporate Strategy"
+            }
+        ],
+        "type": "Full-time",
+        "location": [
+            {
+                "name": "Mumbai"
+            },
+            {
+                "name": "Bangalore"
+            }
+        ],
+        "workArrangement": {
+            "mode": "Hybrid"
+        },
+        "ctc": {
+            "from": 22,
+            "to": 28,
+            "currency": "INR"
+        },
+        "experience": "0-2 years",
+        "educationCriteria": "MBA from Tier-1 institute",
+        "eligibilityCriteria": "Strong analytical and problem-solving skills",
+        "description": "Lead strategic initiatives for Fortune 500 clients across industries. Work on market entry strategies, M&A analysis, and operational improvements.",
+        "jdFiles": []
+    },
+    {
+        "_id": "sample_job_002",
+        "title": "Operations Manager",
+        "status": "ACTIVE",
+        "recruitingCompanyId": {
+            "companyName": "Razorpay",
+            "sectors": [
+                {
+                    "name": "Fintech"
+                }
+            ],
+            "companySize": "Medium",
+            "location": [
+                {
+                    "name": "Bangalore"
+                }
+            ]
+        },
+        "roles": [
+            {
+                "name": "Operations Lead"
+            }
+        ],
+        "team": [
+            {
+                "name": "Supply Chain Operations"
+            }
+        ],
+        "type": "Full-time",
+        "location": [
+            {
+                "name": "Bangalore"
+            }
+        ],
+        "workArrangement": {
+            "mode": "Onsite"
+        },
+        "ctc": {
+            "from": 18,
+            "to": 22,
+            "currency": "INR"
+        },
+        "experience": "2-4 years",
+        "educationCriteria": "MBA with Operations specialization preferred",
+        "eligibilityCriteria": "Prior experience in fintech or e-commerce operations",
+        "description": "Manage end-to-end operations for payment processing. Optimize supply chain, improve process efficiency, and lead cross-functional teams.",
+        "jdFiles": []
+    },
+    {
+        "_id": "sample_job_003",
+        "title": "Marketing Manager - Growth",
+        "status": "ACTIVE",
+        "recruitingCompanyId": {
+            "companyName": "Swiggy",
+            "sectors": [
+                {
+                    "name": "Food Tech"
+                }
+            ],
+            "companySize": "Large",
+            "location": [
+                {
+                    "name": "Bangalore"
+                }
+            ]
+        },
+        "roles": [
+            {
+                "name": "Growth Marketing Manager"
+            }
+        ],
+        "team": [
+            {
+                "name": "Digital Marketing"
+            }
+        ],
+        "type": "Full-time",
+        "location": [
+            {
+                "name": "Bangalore"
+            },
+            {
+                "name": "Mumbai"
+            }
+        ],
+        "workArrangement": {
+            "mode": "Hybrid"
+        },
+        "ctc": {
+            "from": 20,
+            "to": 25,
+            "currency": "INR"
+        },
+        "experience": "1-3 years",
+        "educationCriteria": "MBA with Marketing specialization",
+        "eligibilityCriteria": "Experience with digital marketing, SEO, and analytics",
+        "description": "Drive user acquisition and retention strategies. Manage digital campaigns, analyze metrics, and optimize marketing ROI.",
+        "jdFiles": []
+    }
+]

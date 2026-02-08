@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unified Job Discovery - Resumi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fa;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: #1d4ed8;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            margin-bottom: 20px;
+        }
+
+        .demo-btn {
+            background: #1d4ed8;
+            color: white;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .demo-btn:hover {
+            background: #1e40af;
+        }
+
+        .results-container {
+            display: none;
+        }
+
+        .results-container.show {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .section {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #1d4ed8;
+        }
+
+        .job-card {
+            background: #f9fafb;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid #10b981;
+        }
+
+        .job-card.search-url {
+            border-left-color: #f59e0b;
+        }
+
+        .job-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 8px;
+        }
+
+        .job-company {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+
+        .job-meta {
+            font-size: 13px;
+            color: #9ca3af;
+            margin-bottom: 12px;
+        }
+
+        .job-description {
+            font-size: 14px;
+            color: #374151;
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .job-action {
+            display: inline-block;
+            background: #1d4ed8;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .job-action:hover {
+            background: #1e40af;
+        }
+
+        .match-badge {
+            display: inline-block;
+            background: #10b981;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .platform-badge {
+            display: inline-block;
+            background: #6366f1;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px;
+            color: #6b7280;
+            font-size: 18px;
+        }
+
+        .summary {
+            background: #eff6ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border-left: 4px solid #1d4ed8;
+        }
+
+        .summary-stat {
+            display: inline-block;
+            margin-right: 30px;
+            font-size: 16px;
+            color: #374151;
+        }
+
+        .summary-stat strong {
+            color: #1d4ed8;
+            font-size: 24px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Unified Job Discovery</h1>
+            <p class="subtitle">One resume upload → Jobs from ALL platforms (LinkedIn, Indeed, Naukri, Instahyre)</p>
+
+            <button class="demo-btn" onclick="discoverJobs()">
+                🚀 Discover Jobs for Operations Analyst (2.5 years)
+            </button>
+        </div>
+
+        <div id="loading" class="loading" style="display: none;">
+            🔍 Searching across LinkedIn, Indeed, Naukri, Instahyre...
+        </div>
+
+        <div id="summary" style="display: none;"></div>
+
+        <div id="results" class="results-container"></div>
+    </div>
+
+    <script>
+        async function discoverJobs() {
+            const loading = document.getElementById('loading');
+            const results = document.getElementById('results');
+            const summary = document.getElementById('summary');
+
+            loading.style.display = 'block';
+            results.classList.remove('show');
+            summary.style.display = 'none';
+
+            try {
+                const response = await fetch('/api/discover-jobs', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        primary_roles: ["Operations Analyst"],
+                        role_family: "Operations",
+                        years_of_experience: 2.5,
+                        top_skills: ["Excel", "PowerPoint", "Process Improvement"],
+                        preferred_locations: ["Bangalore", "Mumbai"],
+                        location_flexibility: "flexible"
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    displayResults(data);
+                } else {
+                    results.innerHTML = '<p style="color: red;">Failed to discover jobs</p>';
+                }
+
+            } catch (error) {
+                results.innerHTML = '<p style="color: red;">Error: ' + error.message + '</p>';
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+
+        function displayResults(data) {
+            const results = document.getElementById('results');
+            const summary = document.getElementById('summary');
+
+            // Show summary
+            summary.innerHTML = `
+                <div class="summary-stat">
+                    <strong>${data.total_results}</strong> Total Results
+                </div>
+                <div class="summary-stat">
+                    <strong>${data.total_api_jobs}</strong> Direct Jobs
+                </div>
+                <div class="summary-stat">
+                    <strong>${data.total_search_urls}</strong> Smart Searches
+                </div>
+            `;
+            summary.style.display = 'block';
+
+            let html = '';
+
+            // API Jobs Section
+            html += '<div class="section">';
+            html += '<div class="section-title">📱 Direct Job Listings (API)</div>';
+
+            if (data.api_jobs && data.api_jobs.length > 0) {
+                data.api_jobs.forEach(job => {
+                    html += `
+                        <div class="job-card">
+                            <div class="job-title">
+                                ${job.title}
+                                <span class="match-badge">${job.match_score}% Match</span>
+                            </div>
+                            <div class="job-company">
+                                ${job.company} • ${job.location}
+                                <span class="platform-badge">${job.source_platform}</span>
+                            </div>
+                            <div class="job-meta">
+                                ${job.experience_required || ''} ${job.salary_range ? '• ' + job.salary_range : ''}
+                                ${job.posted_date ? '• ' + job.posted_date : ''}
+                            </div>
+                            <div class="job-description">${job.description || ''}</div>
+                            <div style="margin-top: 10px; font-size: 13px; color: #6b7280; font-style: italic;">
+                                💡 ${job.match_reason}
+                            </div>
+                            <div style="margin-top: 12px;">
+                                <a href="${job.action_url}" target="_blank" class="job-action">
+                                    ${job.action_label}
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                });
+            } else {
+                html += '<p style="color: #6b7280;">No direct jobs available. Try the smart search URLs →</p>';
+            }
+
+            html += '</div>';
+
+            // Search URLs Section
+            html += '<div class="section">';
+            html += '<div class="section-title">🔍 Smart Search URLs</div>';
+
+            if (data.search_recommendations && data.search_recommendations.length > 0) {
+                data.search_recommendations.forEach(search => {
+                    html += `
+                        <div class="job-card search-url">
+                            <div class="job-title">
+                                ${search.title}
+                                <span class="match-badge">${search.match_score}% Match</span>
+                            </div>
+                            <div class="job-company">
+                                ${search.location}
+                                <span class="platform-badge">${search.source_platform}</span>
+                            </div>
+                            <div class="job-meta">
+                                ${search.experience_required || ''}
+                            </div>
+                            <div style="margin-top: 10px; font-size: 13px; color: #6b7280; font-style: italic;">
+                                💡 ${search.match_reason}
+                            </div>
+                            <div style="margin-top: 12px;">
+                                <a href="${search.action_url}" target="_blank" class="job-action">
+                                    ${search.action_label} →
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            html += '</div>';
+
+            results.innerHTML = html;
+            results.classList.add('show');
+        }
+    </script>
+</body>
+
+</html>

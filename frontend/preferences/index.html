@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preferences - Resumi</title>
+    <link rel="stylesheet" href="/static/shared/styles.css">
+    <style>
+        .preferences-container {
+            max-width: 700px;
+            margin: 60px auto;
+            padding: 40px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .form-group input[type="text"],
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 15px;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input[type="text"]:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-bg);
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .location-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .location-tag {
+            padding: 8px 16px;
+            background: var(--primary-bg);
+            color: var(--primary);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+        
+        .location-tag button {
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 18px;
+            line-height: 1;
+        }
+        
+        .btn-container {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+        }
+        
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 2px solid var(--border);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--border);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="logo">✨ Resumi</h1>
+        </header>
+        
+        <div class="preferences-container">
+            <h2 style="margin-bottom: 10px;">Tell Us Your Preferences</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 30px;">
+                Help us find the perfect jobs for you
+            </p>
+            
+            <form id="preferencesForm">
+                <div class="form-group">
+                    <label for="careerGoals">Career Goals (Optional)</label>
+                    <textarea 
+                        id="careerGoals" 
+                        placeholder="e.g., Looking for senior backend roles in cloud infrastructure..."
+                    ></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="locationInput">Preferred Locations</label>
+                    <input 
+                        type="text" 
+                        id="locationInput" 
+                        placeholder="e.g., San Francisco, Remote, New York"
+                    >
+                    <small style="color: var(--text-tertiary);">Press Enter to add multiple locations</small>
+                    <div class="location-tags" id="locationTags"></div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="openToRelocation">
+                        <label for="openToRelocation" style="margin: 0;">Open to relocation</label>
+                    </div>
+                    
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="openToInternational">
+                        <label for="openToInternational" style="margin: 0;">Open to international roles</label>
+                    </div>
+                    
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="remoteOnly">
+                        <label for="remoteOnly" style="margin: 0;">Remote positions only</label>
+                    </div>
+                </div>
+                
+                <div class="btn-container">
+                    <button type="button" class="btn btn-secondary" onclick="window.history.back()">
+                        Back
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        Find Jobs →
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        const locationInput = document.getElementById('locationInput');
+        const locationTags = document.getElementById('locationTags');
+        const form = document.getElementById('preferencesForm');
+        
+        let locations = [];
+        
+        // Add location on Enter
+        locationInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const value = locationInput.value.trim();
+                if (value && !locations.includes(value)) {
+                    locations.push(value);
+                    renderLocationTags();
+                    locationInput.value = '';
+                }
+            }
+        });
+        
+        function renderLocationTags() {
+            locationTags.innerHTML = locations.map((loc, index) => `
+                <div class="location-tag">
+                    ${loc}
+                    <button type="button" onclick="removeLocation(${index})">×</button>
+                </div>
+            `).join('');
+        }
+        
+        function removeLocation(index) {
+            locations.splice(index, 1);
+            renderLocationTags();
+        }
+        
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const sessionId = sessionStorage.getItem('sessionId');
+            if (!sessionId) {
+                alert('Session expired. Please upload your resume again.');
+                window.location.href = '/';
+                return;
+            }
+            
+            const preferences = {
+                session_id: sessionId,
+                career_goals: document.getElementById('careerGoals').value,
+                preferred_locations: locations,
+                open_to_relocation: document.getElementById('openToRelocation').checked,
+                open_to_international: document.getElementById('openToInternational').checked,
+                remote_only: document.getElementById('remoteOnly').checked
+            };
+            
+            try {
+                // Save preferences
+                const response = await fetch('/api/set-preferences', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(preferences)
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to save preferences');
+                }
+                
+                // Redirect to results
+                window.location.href = '/static/results/index.html';
+                
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        });
+    </script>
+</body>
+</html>

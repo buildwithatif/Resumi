@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>External Search Demo - Resumi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fa;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #1d4ed8;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            margin-bottom: 30px;
+        }
+
+        .demo-btn {
+            background: #1d4ed8;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 30px;
+        }
+
+        .demo-btn:hover {
+            background: #1e40af;
+        }
+
+        .results {
+            display: none;
+        }
+
+        .results.show {
+            display: block;
+        }
+
+        .platform-section {
+            margin-bottom: 30px;
+        }
+
+        .platform-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .search-card {
+            background: #f9fafb;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid #1d4ed8;
+        }
+
+        .search-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 8px;
+        }
+
+        .search-meta {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+
+        .search-reason {
+            font-size: 14px;
+            color: #374151;
+            margin-bottom: 12px;
+            font-style: italic;
+        }
+
+        .search-url {
+            display: block;
+            color: #1d4ed8;
+            text-decoration: none;
+            font-size: 13px;
+            word-break: break-all;
+            padding: 8px;
+            background: white;
+            border-radius: 4px;
+        }
+
+        .search-url:hover {
+            text-decoration: underline;
+        }
+
+        .relevance {
+            display: inline-block;
+            background: #10b981;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #6b7280;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🎯 External Search Generator</h1>
+        <p class="subtitle">Intelligent Naukri & Instahyre search URLs for MBA profiles</p>
+
+        <button class="demo-btn" onclick="generateSearches()">
+            Generate Search URLs for Operations Analyst (2.5 years)
+        </button>
+
+        <div id="loading" class="loading" style="display: none;">
+            Generating optimized search URLs...
+        </div>
+
+        <div id="results" class="results"></div>
+    </div>
+
+    <script>
+        async function generateSearches() {
+            const loading = document.getElementById('loading');
+            const results = document.getElementById('results');
+
+            loading.style.display = 'block';
+            results.classList.remove('show');
+
+            try {
+                const response = await fetch('/api/external-searches', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        primary_roles: ["Operations Analyst"],
+                        role_family: "Operations",
+                        years_of_experience: 2.5,
+                        top_skills: ["Excel", "PowerPoint", "Process Improvement"],
+                        preferred_locations: ["Bangalore", "Mumbai"],
+                        location_flexibility: "flexible",
+                        experience_flexibility: true,
+                        include_mba_tag: true
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    displayResults(data);
+                } else {
+                    results.innerHTML = '<p style="color: red;">Failed to generate searches</p>';
+                }
+
+            } catch (error) {
+                results.innerHTML = '<p style="color: red;">Error: ' + error.message + '</p>';
+            } finally {
+                loading.style.display = 'none';
+                results.classList.add('show');
+            }
+        }
+
+        function displayResults(data) {
+            const results = document.getElementById('results');
+
+            let html = '';
+
+            // Naukri searches
+            if (data.naukri_searches && data.naukri_searches.length > 0) {
+                html += '<div class="platform-section">';
+                html += '<div class="platform-title">📱 Naukri Search URLs</div>';
+
+                data.naukri_searches.forEach((search, index) => {
+                    html += `
+                        <div class="search-card">
+                            <div class="search-title">
+                                ${index + 1}. ${search.role_focus} in ${search.location_focus}
+                                <span class="relevance">${search.relevance_score}/10</span>
+                            </div>
+                            <div class="search-meta">Experience: ${search.experience_band}</div>
+                            <div class="search-reason">💡 ${search.why_this_search}</div>
+                            <a href="${search.search_url}" target="_blank" class="search-url">
+                                ${search.search_url}
+                            </a>
+                        </div>
+                    `;
+                });
+
+                html += '</div>';
+            }
+
+            // Instahyre searches
+            if (data.instahyre_searches && data.instahyre_searches.length > 0) {
+                html += '<div class="platform-section">';
+                html += '<div class="platform-title">💼 Instahyre Search URLs</div>';
+
+                data.instahyre_searches.forEach((search, index) => {
+                    html += `
+                        <div class="search-card">
+                            <div class="search-title">
+                                ${index + 1}. ${search.role_focus} in ${search.location_focus}
+                                <span class="relevance">${search.relevance_score}/10</span>
+                            </div>
+                            <div class="search-meta">Experience: ${search.experience_band}</div>
+                            <div class="search-reason">💡 ${search.why_this_search}</div>
+                            <a href="${search.search_url}" target="_blank" class="search-url">
+                                ${search.search_url}
+                            </a>
+                        </div>
+                    `;
+                });
+
+                html += '</div>';
+            }
+
+            html += `<p style="text-align: center; color: #6b7280; margin-top: 20px;">
+                ✅ Generated ${data.total_recommendations} optimized search URLs
+            </p>`;
+
+            results.innerHTML = html;
+        }
+    </script>
+</body>
+
+</html>

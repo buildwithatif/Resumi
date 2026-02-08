@@ -1,0 +1,37 @@
+{
+  "Strategy": {
+    "total_jobs": 1,
+    "india_cities": {
+      "Mumbai": 1,
+      "Bangalore": 1
+    },
+    "uae_cities": {},
+    "other_locations": {},
+    "india_percentage": 200.0,
+    "uae_percentage": 0.0,
+    "pan_india": true
+  },
+  "Operations": {
+    "total_jobs": 1,
+    "india_cities": {
+      "Bangalore": 1
+    },
+    "uae_cities": {},
+    "other_locations": {},
+    "india_percentage": 100.0,
+    "uae_percentage": 0.0,
+    "pan_india": true
+  },
+  "Marketing": {
+    "total_jobs": 1,
+    "india_cities": {
+      "Bangalore": 1,
+      "Mumbai": 1
+    },
+    "uae_cities": {},
+    "other_locations": {},
+    "india_percentage": 200.0,
+    "uae_percentage": 0.0,
+    "pan_india": true
+  }
+}

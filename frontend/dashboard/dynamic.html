@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resumi - Intelligent Job Discovery</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f5f5f7;
+            --surface: #ffffff;
+            --primary: #000000;
+            --secondary: #86868b;
+            --accent: #0071e3;
+            --border: #d2d2d7;
+            --radius: 12px;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--primary);
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 40px;
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: var(--secondary);
+            font-size: 19px;
+            font-weight: 400;
+        }
+
+        /* Upload Section */
+        .upload-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 40px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border: 1px dashed var(--border);
+            transition: all 0.2s;
+            cursor: pointer;
+            margin-bottom: 30px;
+        }
+
+        .upload-card:hover {
+            border-color: var(--accent);
+            transform: scale(1.01);
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            color: var(--accent);
+        }
+
+        .upload-text {
+            font-size: 17px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .upload-hint {
+            font-size: 14px;
+            color: var(--secondary);
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        /* Results Section */
+        #results-container {
+            display: none;
+            /* Hidden by default */
+        }
+
+        .profile-summary {
+            background: var(--surface);
+            padding: 24px;
+            border-radius: var(--radius);
+            margin-bottom: 30px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            box-shadow: var(--shadow);
+        }
+
+        .profile-badge {
+            background: #e3f2fd;
+            color: var(--accent);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        /* Job Cards */
+        .job-list {
+            display: grid;
+            gap: 16px;
+        }
+
+        .job-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .job-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .job-info h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .job-info p {
+            color: var(--secondary);
+            font-size: 15px;
+        }
+
+        .meta-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+            font-size: 13px;
+            color: var(--secondary);
+        }
+
+        .match-indicator {
+            text-align: right;
+            min-width: 80px;
+        }
+
+        .score-circle {
+            background: var(--accent);
+            color: white;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 15px;
+            margin-left: auto;
+            margin-bottom: 4px;
+        }
+
+        .match-label {
+            font-size: 12px;
+            color: var(--secondary);
+        }
+
+        /* Loader */
+        .loader {
+            display: none;
+            margin: 40px auto;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--accent);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .job-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+
+            .match-indicator {
+                text-align: left;
+                margin-left: 0;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .score-circle {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Resumi</h1>
+            <div class="subtitle">AI-Powered Job Discovery</div>
+        </header>
+
+        <div class="upload-card" onclick="document.getElementById('fileInput').click()">
+            <div class="upload-icon">📄</div>
+            <div class="upload-text">Drop your resume here</div>
+            <div class="upload-hint">Supports PDF & DOCX. We'll extract skills & find matches.</div>
+            <input type="file" id="fileInput" accept=".pdf,.docx">
+        </div>
+
+        <div class="loader" id="loader"></div>
+
+        <div id="results-container">
+            <div class="profile-summary">
+                <div>
+                    <h3 style="margin-bottom:4px;">Profile Analysis</h3>
+                    <div id="parsed-data" style="color: var(--secondary); font-size: 14px;"></div>
+                </div>
+            </div>
+
+            <h2 style="margin-bottom: 20px; font-size: 24px;">Recommended Jobs</h2>
+            <div class="job-list" id="job-list">
+                <!-- Jobs go here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const loader = document.getElementById('loader');
+        const resultsDiv = document.getElementById('results-container');
+        const jobList = document.getElementById('job-list');
+        const parsedData = document.getElementById('parsed-data');
+
+        fileInput.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            // Reset UI
+            resultsDiv.style.display = 'none';
+            jobList.innerHTML = '';
+            loader.style.display = 'block';
+
+            const formData = new FormData();
+            formData.append('resume', file);
+
+            try {
+                // 1. Upload & Parse
+                const uploadRes = await fetch('http://localhost:8000/api/upload-resume', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await uploadRes.json();
+
+                // Check for errors
+                if (!uploadRes.ok || !data.success) {
+                    throw new Error(data.detail || 'Upload failed');
+                }
+
+                const profile = data.profile; // Access nested profile
+
+                // Display Parsed Info
+                parsedData.innerHTML = `
+                Verified <strong>${profile.primary_role}</strong> (${profile.experience_years}y exp) <br>
+                Identified ${profile.skills.length} skills including ${profile.skills.slice(0, 5).join(', ')}...
+            `;
+
+                // 2. Discover Jobs
+                const discoverRes = await fetch('http://localhost:8000/api/discover-jobs', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        primary_roles: [profile.primary_role],
+                        role_family: profile.primary_role,
+                        years_of_experience: profile.experience_years,
+                        top_skills: profile.skills,
+                        preferred_locations: ["Remote", "Bangalore"], // Defaulting for demo
+                        location_flexibility: "flexible"
+                    })
+                });
+
+                const jobs = await discoverRes.json();
+
+                // Render Jobs
+                loader.style.display = 'none';
+                resultsDiv.style.display = 'block';
+
+                // Merge API jobs and Search URLs
+                const allJobs = [...(jobs.api_jobs || []), ...(jobs.search_recommendations || [])];
+
+                if (allJobs.length === 0) {
+                    jobList.innerHTML = '<div style="text-align:center; color:gray;">No jobs found. Try different keywords.</div>';
+                    return;
+                }
+
+                allJobs.forEach(job => {
+                    const isSearch = job.source === "search_url";
+                    const badgeColor = isSearch ? "#FF9500" : "#34C759";
+
+                    const card = document.createElement('a');
+                    card.className = 'job-card';
+                    card.href = job.action_url;
+                    card.target = "_blank";
+
+                    card.innerHTML = `
+                    <div class="job-info">
+                        <h3>${job.title}</h3>
+                        <p>${job.company} &bull; ${job.location}</p>
+                        <div class="meta-row">
+                            <span style="color:${badgeColor}; font-weight:600;">${job.source_platform}</span>
+                            <span>${job.posted_date || 'Recently'}</span>
+                        </div>
+                    </div>
+                    <div class="match-indicator">
+                        <div class="score-circle">${job.match_score}%</div>
+                        <div class="match-label">Match</div>
+                    </div>
+                `;
+                    jobList.appendChild(card);
+                });
+
+            } catch (err) {
+                console.error(err);
+                loader.style.display = 'none';
+                alert("Error processing resume. Please try again.");
+            }
+        });
+    </script>
+
+</body>
+
+</html>

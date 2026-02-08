@@ -1,0 +1,38 @@
+{
+  "Strategy": {
+    "total_jobs": 1,
+    "ctc_bands": {
+      "High": 1
+    },
+    "ctc_stats": {
+      "min": 28.0,
+      "max": 28.0,
+      "median": 28.0,
+      "sample_count": 1
+    }
+  },
+  "Operations": {
+    "total_jobs": 1,
+    "ctc_bands": {
+      "Medium": 1
+    },
+    "ctc_stats": {
+      "min": 22.0,
+      "max": 22.0,
+      "median": 22.0,
+      "sample_count": 1
+    }
+  },
+  "Marketing": {
+    "total_jobs": 1,
+    "ctc_bands": {
+      "High": 1
+    },
+    "ctc_stats": {
+      "min": 25.0,
+      "max": 25.0,
+      "median": 25.0,
+      "sample_count": 1
+    }
+  }
+}

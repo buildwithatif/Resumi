@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resumi - Job Discovery Dashboard</title>
+    <link rel="stylesheet" href="styles/dashboard.css">
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="sidebar-logo">
+                <h1>Resumi</h1>
+            </div>
+
+            <div class="sidebar-nav">
+                <a href="#discover" class="nav-item active" data-view="discover">
+                    <span class="icon">🔍</span>
+                    <span class="label">Discover Jobs</span>
+                    <span class="count" id="discover-count">0</span>
+                </a>
+
+                <a href="#saved" class="nav-item" data-view="saved">
+                    <span class="icon">⭐</span>
+                    <span class="label">Saved</span>
+                    <span class="count" id="saved-count">0</span>
+                </a>
+
+                <a href="#applied" class="nav-item" data-view="applied">
+                    <span class="icon">📤</span>
+                    <span class="label">Applied</span>
+                    <span class="count" id="applied-count">0</span>
+                </a>
+
+                <a href="#interviews" class="nav-item" data-view="interviewing">
+                    <span class="icon">💬</span>
+                    <span class="label">Interviews</span>
+                    <span class="count" id="interviewing-count">0</span>
+                </a>
+
+                <a href="#offers" class="nav-item" data-view="offer">
+                    <span class="icon">🎉</span>
+                    <span class="label">Offers</span>
+                    <span class="count" id="offer-count">0</span>
+                </a>
+
+                <a href="#rejected" class="nav-item" data-view="rejected">
+                    <span class="icon">❌</span>
+                    <span class="label">Not Interested</span>
+                    <span class="count" id="rejected-count">0</span>
+                </a>
+            </div>
+
+            <div class="sidebar-footer">
+                <a href="/upload" class="nav-item">
+                    <span class="icon">📄</span>
+                    <span class="label">Upload Resume</span>
+                </a>
+                <a href="/upload" class="nav-item">
+                    <span class="icon">👤</span>
+                    <span class="label">My Profile</span>
+                </a>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-header">
+                <h2 id="view-title">Discover Jobs</h2>
+                <p id="view-subtitle">Personalized job recommendations based on your profile</p>
+            </div>
+
+            <div class="job-list" id="job-list">
+                <!-- Job cards will be inserted here by JavaScript -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Job Details Panel (Hidden by default) -->
+    <div class="job-details-panel" id="job-details-panel">
+        <div class="panel-header">
+            <button class="close-btn" id="close-panel">✕</button>
+            <h2 id="detail-title">Job Title</h2>
+            <p class="job-company" id="detail-company">Company Name</p>
+        </div>
+
+        <div class="panel-content" id="panel-content">
+            <!-- Details will be inserted by JavaScript -->
+        </div>
+
+        <div class="panel-footer">
+            <button class="btn btn-secondary" id="save-job-btn">Save for Later</button>
+            <button class="btn btn-primary" id="apply-job-btn">Apply Now</button>
+        </div>
+    </div>
+
+    <script src="scripts/dashboard.js"></script>
+    <script src="scripts/pipeline.js"></script>
+</body>
+
+</html>

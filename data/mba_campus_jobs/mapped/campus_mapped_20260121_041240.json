@@ -1,0 +1,97 @@
+[
+  {
+    "job_id": "sample_job_001",
+    "job_title": "Strategy Associate",
+    "job_status": "ACTIVE",
+    "company_name": "McKinsey & Company",
+    "company_sector": "Consulting",
+    "company_size": "Large",
+    "company_location": [
+      "Mumbai"
+    ],
+    "primary_role": "Strategy Consultant",
+    "role_family": "Strategy",
+    "team_function": "Corporate Strategy",
+    "employment_type": "Full-time",
+    "job_locations": [
+      "Mumbai",
+      "Bangalore"
+    ],
+    "work_mode": "Hybrid",
+    "open_to_relocation": "Unknown",
+    "ctc_min": 22.0,
+    "ctc_max": 28.0,
+    "ctc_currency": "INR",
+    "ctc_band": "High",
+    "experience_required": "0-2 years",
+    "education_required": "MBA from Tier-1 institute",
+    "eligibility_notes": "Strong analytical and problem-solving skills",
+    "job_description_raw": "Lead strategic initiatives for Fortune 500 clients across industries. Work on market entry strategies, M&A analysis, and operational improvements.",
+    "jd_attachments": [],
+    "source": "campus_data",
+    "imported_at": "2026-01-21T04:12:40.013219"
+  },
+  {
+    "job_id": "sample_job_002",
+    "job_title": "Operations Manager",
+    "job_status": "ACTIVE",
+    "company_name": "Razorpay",
+    "company_sector": "Fintech",
+    "company_size": "Medium",
+    "company_location": [
+      "Bangalore"
+    ],
+    "primary_role": "Operations Lead",
+    "role_family": "Operations",
+    "team_function": "Supply Chain Operations",
+    "employment_type": "Full-time",
+    "job_locations": [
+      "Bangalore"
+    ],
+    "work_mode": "Onsite",
+    "open_to_relocation": "Unknown",
+    "ctc_min": 18.0,
+    "ctc_max": 22.0,
+    "ctc_currency": "INR",
+    "ctc_band": "Medium",
+    "experience_required": "2-4 years",
+    "education_required": "MBA with Operations specialization preferred",
+    "eligibility_notes": "Prior experience in fintech or e-commerce operations",
+    "job_description_raw": "Manage end-to-end operations for payment processing. Optimize supply chain, improve process efficiency, and lead cross-functional teams.",
+    "jd_attachments": [],
+    "source": "campus_data",
+    "imported_at": "2026-01-21T04:12:40.014271"
+  },
+  {
+    "job_id": "sample_job_003",
+    "job_title": "Marketing Manager - Growth",
+    "job_status": "ACTIVE",
+    "company_name": "Swiggy",
+    "company_sector": "Food Tech",
+    "company_size": "Large",
+    "company_location": [
+      "Bangalore"
+    ],
+    "primary_role": "Growth Marketing Manager",
+    "role_family": "Marketing",
+    "team_function": "Digital Marketing",
+    "employment_type": "Full-time",
+    "job_locations": [
+      "Bangalore",
+      "Mumbai"
+    ],
+    "work_mode": "Hybrid",
+    "open_to_relocation": "Unknown",
+    "ctc_min": 20.0,
+    "ctc_max": 25.0,
+    "ctc_currency": "INR",
+    "ctc_band": "High",
+    "experience_required": "1-3 years",
+    "education_required": "MBA with Marketing specialization",
+    "eligibility_notes": "Experience with digital marketing, SEO, and analytics",
+    "job_description_raw": "Drive user acquisition and retention strategies. Manage digital campaigns, analyze metrics, and optimize marketing ROI.",
+    "jd_attachments": [],
+    "source": "campus_data",
+    "imported_at": "2026-01-21T04:12:40.014330"
+  }
+]

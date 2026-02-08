@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resumi - AI-Powered Job Recommendations</title>
+    <link rel="stylesheet" href="/static/shared/styles.css">
+    <style>
+        .upload-container {
+            max-width: 600px;
+            margin: 100px auto;
+            padding: 40px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .upload-zone {
+            border: 3px dashed var(--primary);
+            border-radius: 15px;
+            padding: 60px 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--bg-secondary);
+        }
+        
+        .upload-zone:hover {
+            border-color: var(--primary-light);
+            background: var(--primary-bg);
+            transform: translateY(-2px);
+        }
+        
+        .upload-zone.dragover {
+            border-color: var(--accent);
+            background: var(--accent-bg);
+        }
+        
+        .upload-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            opacity: 0.7;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .btn-primary {
+            margin-top: 20px;
+            padding: 14px 40px;
+            font-size: 16px;
+            font-weight: 600;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+        }
+        
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .loading {
+            display: none;
+            margin-top: 20px;
+        }
+        
+        .loading.active {
+            display: block;
+        }
+        
+        .spinner {
+            border: 4px solid var(--bg-secondary);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error-message {
+            color: var(--error);
+            margin-top: 15px;
+            padding: 12px;
+            background: var(--error-bg);
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .error-message.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="logo">✨ Resumi</h1>
+            <p class="tagline">AI-Powered Job Recommendations Tailored to You</p>
+        </header>
+        
+        <div class="upload-container">
+            <h2 style="margin-bottom: 30px; text-align: center;">Upload Your Resume</h2>
+            
+            <div class="upload-zone" id="uploadZone">
+                <div class="upload-icon">📄</div>
+                <h3>Drag & Drop Your Resume</h3>
+                <p style="color: var(--text-secondary); margin: 10px 0;">or click to browse</p>
+                <p style="font-size: 14px; color: var(--text-tertiary);">Supports PDF and DOCX (Max 5MB)</p>
+                <input type="file" id="fileInput" class="file-input" accept=".pdf,.docx">
+            </div>
+            
+            <div id="fileName" style="margin-top: 15px; text-align: center; color: var(--text-secondary);"></div>
+            
+            <div style="text-align: center;">
+                <button id="uploadBtn" class="btn-primary" disabled>Continue</button>
+            </div>
+            
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p style="text-align: center; margin-top: 15px; color: var(--text-secondary);">
+                    Analyzing your resume...
+                </p>
+            </div>
+            
+            <div class="error-message" id="errorMessage"></div>
+        </div>
+    </div>
+    
+    <script>
+        const uploadZone = document.getElementById('uploadZone');
+        const fileInput = document.getElementById('fileInput');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const fileName = document.getElementById('fileName');
+        const loading = document.getElementById('loading');
+        const errorMessage = document.getElementById('errorMessage');
+        
+        let selectedFile = null;
+        
+        // Click to browse
+        uploadZone.addEventListener('click', () => fileInput.click());
+        
+        // File selection
+        fileInput.addEventListener('change', (e) => {
+            handleFile(e.target.files[0]);
+        });
+        
+        // Drag and drop
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.classList.add('dragover');
+        });
+        
+        uploadZone.addEventListener('dragleave', () => {
+            uploadZone.classList.remove('dragover');
+        });
+        
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('dragover');
+            handleFile(e.dataTransfer.files[0]);
+        });
+        
+        function handleFile(file) {
+            if (!file) return;
+            
+            // Validate file type
+            if (!file.name.endsWith('.pdf') && !file.name.endsWith('.docx')) {
+                showError('Please upload a PDF or DOCX file');
+                return;
+            }
+            
+            // Validate file size (5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                showError('File size must be less than 5MB');
+                return;
+            }
+            
+            selectedFile = file;
+            fileName.textContent = `Selected: ${file.name}`;
+            uploadBtn.disabled = false;
+            errorMessage.classList.remove('active');
+        }
+        
+        uploadBtn.addEventListener('click', async () => {
+            if (!selectedFile) return;
+            
+            uploadBtn.disabled = true;
+            loading.classList.add('active');
+            errorMessage.classList.remove('active');
+            
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+            
+            try {
+                const response = await fetch('/api/upload-resume', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.detail || 'Upload failed');
+                }
+                
+                // Store session ID and redirect to preferences
+                sessionStorage.setItem('sessionId', data.session_id);
+                sessionStorage.setItem('profile', JSON.stringify(data.profile));
+                window.location.href = '/static/preferences/index.html';
+                
+            } catch (error) {
+                showError(error.message);
+                uploadBtn.disabled = false;
+                loading.classList.remove('active');
+            }
+        });
+        
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.classList.add('active');
+        }
+    </script>
+</body>
+</html>
