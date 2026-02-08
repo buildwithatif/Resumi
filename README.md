@@ -4,6 +4,7 @@
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.104.1-green)
 ![License](https://img.shields.io/badge/License-MIT-purple)
 ![Status](https://img.shields.io/badge/Status-Active-success)
+![CI](https://github.com/buildwithatif/Resumi/actions/workflows/ci.yml/badge.svg)
 
 **Resumi** is an intelligent, resume-first job discovery engine designed to bridge the gap between candidates and their ideal roles. Unlike traditional job boards that rely on keyword spamming, Resumi uses natural language processing to understand a candidate's profile—skills, experience, and seniority—and matches them with curated opportunities from reliable sources.
 
